@@ -30,7 +30,7 @@ titanic$pclass <- factor(titanic$pclass)
 titanic$survived <- factor(titanic$survived, levels = c("Yes", "No"))
 ```
 
-
+\pagebreak
 
 # Question 1
 
