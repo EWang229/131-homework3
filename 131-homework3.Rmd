@@ -2,12 +2,12 @@
 title: "Homework 3"
 author: "PSTAT 131/231"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     toc: yes
     toc_float: yes
     code_folding: show
-  pdf_document:
-    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -244,7 +244,7 @@ augment(log_titanic_fit, new_data = titanic_test) %>%  # calculating AUC
   roc_auc(survived, .pred_Yes)
 ```
 
-The accuracy of the logistic regression model on the testing data is 78.21%. The AUC is about 85%. I would say that the model performed quite well since it was able to accurately predict 78.21% of classes on data it has never seen before. Additionally, it is better than the baseline of randomly guessing classes, which is about 50% accuracy. The accuracy of the logistic regression model on the training data is 81.88%. The accuracies are different because, generally, models do not generalize as well on testing data compared to training data. The values in the testing data may not have been seen by the  model before, so it makes sense that the testing accuracy is lower.
+The accuracy of the logistic regression model on the testing data is 78.21%. The AUC is about 85%. I would say that the model performed quite well since it was able to accurately predict 78.21% of classes on data it has never seen before. Additionally, it is better than the baseline of randomly guessing classes, which is about 50% accuracy. The accuracy of the logistic regression model on the training data is 81.88%. The accuracies are different because, generally, models do not perform as well on testing data compared to training data. This is because the values in the testing data may not have been seen by the model before, so it makes sense that the testing accuracy is lower.
 
 
 
