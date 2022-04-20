@@ -15,7 +15,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE,
                       warning = FALSE)
 ```
 
-```{r, message = FALSE, warning = FALSE}
+
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(tidymodels)
 library(ISLR) 
@@ -29,7 +30,6 @@ titanic <- read.csv("C:/Users/rocke/Downloads/homework-3/homework-3/data/titanic
 titanic$pclass <- factor(titanic$pclass)
 titanic$survived <- factor(titanic$survived, levels = c("Yes", "No"))
 ```
-
 \pagebreak
 
 # Question 1
@@ -47,8 +47,8 @@ nrow(titanic)
 nrow(titanic_train)  # about 80% of the data
 nrow(titanic_test)  # about to be 20% of the data
 ```
-There seems to be quite a few NAs in the Cabin and Age variables (just a handful in Embarked as well).  
-It is a good idea to use stratified sampling for this data because it is possible that one result (survived / did not survive) outnumbers the other. If we do not utilize stratified sampling, it may lead to low quality training and testing data. 
+There seems to be quite a few NAs in the Cabin and Age variables (just a handful in Embarked as well). This may cause problems for our model and we need to impute values for them if used in the model (or drop them).  
+It is a good idea to use stratified sampling for this data because one result (did not survive) outnumbers the other (survived) by quite a bit. We want a balanced distribution of these responses so that our model gets enough data on each response type. Thus, if we do not utilize stratified sampling, it may lead to low quality training and testing data.
 
 # Question 2
 
@@ -58,7 +58,7 @@ Using the **training** data set, explore/describe the distribution of the outcom
 ggplot(data = titanic_train, aes(x = survived)) + geom_bar()
 ```
 
-It seems that there are more people who did not survive than survived, with about 100 people more people in the "did not survive" category.
+It seems that there are more people who did not survive than survived, with about 200 people more people in the "did not survive" category. Quite an imbalanced distribution.
 
 # Question 3
 
@@ -232,6 +232,10 @@ log_titanic_test_acc
 # creating the confusion matrix
 augment(log_titanic_fit, new_data = titanic_test) %>%
   conf_mat(truth = survived, estimate = .pred_class)
+
+augment(log_titanic_fit, new_data = titanic_test) %>%
+  conf_mat(truth = survived, estimate = .pred_class) %>%
+  autoplot(type = "heatmap")
 ```
 ```{r}
 # creating the ROC curve
@@ -244,7 +248,7 @@ augment(log_titanic_fit, new_data = titanic_test) %>%  # calculating AUC
   roc_auc(survived, .pred_Yes)
 ```
 
-The accuracy of the logistic regression model on the testing data is 78.21%. The AUC is about 85%. I would say that the model performed quite well since it was able to accurately predict 78.21% of classes on data it has never seen before. Additionally, it is better than the baseline of randomly guessing classes, which is about 50% accuracy. The accuracy of the logistic regression model on the training data is 81.88%. The accuracies are different because, generally, models do not perform as well on testing data compared to training data. This is because the values in the testing data may not have been seen by the model before, so it makes sense that the testing accuracy is lower.
+The accuracy of the logistic regression model on the testing data is 78.21%. The AUC is about 85%. I would say that the model performed quite well since it was able to accurately predict 78.21% of classes on data it has never seen before. Additionally, it is better than the baseline of randomly guessing classes, which is about 50% accuracy. The accuracy of the logistic regression model on the training data is 81.88%. The accuracies are different because, generally, models do not perform as well on testing data compared to training data. This is because the values in the testing data may not have been seen by the model before, so it makes sense that the testing accuracy is lower. Additionally, the model is almost always more suited to the training data as opposed to the testing data since the model uses training data to train.
 
 
 
